@@ -47,11 +47,22 @@ namespace Temporal.Tests
         }
 
         [Fact]
-        public void Freeze_ShouldFreezeToExpectedDateTime()
+        public void Freeze_DateTime_ShouldFreezeToExpectedDateTime()
         {
             var dateTime = new DateTime(2000, 1, 1, 0, 0, 0, DateTimeKind.Local);
 
             SystemClock.Freeze(dateTime);
+
+            Assert.Equal(dateTime, SystemClock.Now);
+        }
+
+        [Fact]
+        public void Freeze_DateTimeOffset_ShouldFreezeToExpectedDateTime()
+        {
+            var dateTime = new DateTime(2000, 1, 1, 0, 0, 0, DateTimeKind.Local);
+            var dateTimeOffset = new DateTimeOffset(dateTime);
+
+            SystemClock.Freeze(dateTimeOffset);
 
             Assert.Equal(dateTime, SystemClock.Now);
         }
