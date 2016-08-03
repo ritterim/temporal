@@ -4,31 +4,31 @@ namespace Temporal
 {
     public static class SystemClock
     {
-        private static DateTimeOffset? frozenDateTime { get; set; }
+        private static DateTimeOffset? frozenAt { get; set; }
 
-        public static DateTime Now => frozenDateTime.HasValue
-            ? frozenDateTime.Value.LocalDateTime
+        public static DateTime Now => frozenAt.HasValue
+            ? frozenAt.Value.LocalDateTime
             : DateTime.Now;
 
-        public static DateTime UtcNow => frozenDateTime.HasValue
-            ? frozenDateTime.Value.UtcDateTime
+        public static DateTime UtcNow => frozenAt.HasValue
+            ? frozenAt.Value.UtcDateTime
             : DateTime.UtcNow;
 
-        public static bool IsFrozen => frozenDateTime.HasValue;
+        public static bool IsFrozen => frozenAt.HasValue;
 
         public static void Freeze(DateTime newSystemTime)
         {
-            frozenDateTime = newSystemTime;
+            frozenAt = newSystemTime;
         }
 
         public static void Freeze(DateTimeOffset newSystemTime)
         {
-            frozenDateTime = newSystemTime.DateTime;
+            frozenAt = newSystemTime.DateTime;
         }
 
         public static void Unfreeze()
         {
-            frozenDateTime = null;
+            frozenAt = null;
         }
     }
 }
