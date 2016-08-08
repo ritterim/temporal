@@ -31,7 +31,7 @@ namespace Temporal
             {
                 freeze.Use(async (context, next) =>
                 {
-                    var query = context.Request.Query["datetime"];
+                    var query = context.Request.Query["utc"];
 
                     DateTime dateTime;
                     if (DateTime.TryParse(query, out dateTime))

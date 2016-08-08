@@ -2,45 +2,13 @@
   font-family: sans-serif;
   text-align: center;
 }
-.temporal-time-machine-container h2 {font-weight: normal;}
+.temporal-time-machine-container h2 {
+  font-weight: normal;
+}
 .temporal-time-machine-container img {
   height: 75px;
-  max-width: 100%;
+  /*max-width: 100%;*/
 }
-.temporal-time-machine-container ul {
-  width: 400px;
-  max-width: 100%;
-  min-width: 100px;
-  margin: 0 auto;
-  padding: 0;
-  -webkit-padding-start: 0;
-}
-.temporal-time-machine-container li {
-  list-style-type: none;
-  margin: 5px 0;
-}
-.temporal-time-machine-container li a {
-  color: white;
-  background: #2E8EB3;
-  border-right: 1px solid #17607d;
-  border-bottom: 1px solid #17607d;
-  display: block;
-  padding: 1em;
-  text-decoration: none;
-  -webkit-transition: all, 0.3s;
-     -moz-transition: all, 0.3s;
-       -o-transition: all, 0.3s;
-          transition: all, 0.3s;
-  -webkit-border-radius: 3px;
-     -moz-border-radius: 3px;
-       -o-border-radius: 3px;
-          border-radius: 3px;
-}
-.temporal-time-machine-container li a:hover {
-  background: #17607d;
-  color: white;
-}
-
 .temporal-time-machine-widget {
   position: fixed;
   bottom: 0;
@@ -48,12 +16,11 @@
   font-family: sans-serif;
   font-size: 14px;
   margin: 0 auto;
-  width: 150px;
+  width: 230px;
   -webkit-box-shadow: 2px 2px 2px #ccc;
      -moz-box-shadow: 2px 2px 2px #ccc;
        -o-box-shadow: 2px 2px 2px #ccc;
           box-shadow: 2px 2px 2px #ccc;
-
 }
 .temporal-time-machine-widget * {
   box-sizing: initial;
@@ -80,7 +47,6 @@
      -moz-transition: all, 0.3s;
        -o-transition: all, 0.3s;
           transition: all, 0.3s;
-
 }
 .temporal-time-machine-widget .temporal-time-machine-header:hover {
   background: #17607d;
@@ -102,9 +68,7 @@
   transform: translateY(-50%);
   left: 7px;
 }
-
-.temporal-time-machine-widget .temporal-time-machine-header h2,
-.temporal-time-machine-widget .temporal-time-machine-body ul li .temporal-time-machine-item h3 {
+.temporal-time-machine-widget .temporal-time-machine-header h2 {
   margin: 0;
   padding: 0;
   font-size: 14px;
@@ -127,86 +91,28 @@
   -webkit-filter: saturate(0%);
 }
 .temporal-time-machine-widget .temporal-time-machine-body {
-  overflow-y: auto;
-  overflow-x: hidden;
   position: relative;
-  max-height: 360px;
 }
-.temporal-time-machine-widget .temporal-time-machine-body ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-.temporal-time-machine-widget .temporal-time-machine-body ul li {
-  position: relative;
-  background: #f6f6f6;
-  display: block;
+.temporal-time-machine-widget .temporal-time-machine-body div {
+  /*padding: 0.5em;*/
+  float: left;
+  text-align: center;
   width: 100%;
+}
+.temporal-time-machine-widget .temporal-time-machine-body button {
+  background: whitesmoke;
+  border: none;
+  cursor: pointer;
+  font-size: 1.5em;
+  padding: 0.5em 0;
+  width: 100%;
+}
+.temporal-time-machine-widget .temporal-time-machine-body input {
   box-sizing: border-box;
-  padding: 10px;
-}
-.temporal-time-machine-widget .temporal-time-machine-body ul li:before,
-.temporal-time-machine-widget .temporal-time-machine-body ul li:after {
-  display: block;
-  content: '';
-  clear: both;
-}
-.temporal-time-machine-widget .temporal-time-machine-body ul li:nth-child(even) {
-  background: moccasin;
-}
-.temporal-time-machine-widget .temporal-time-machine-body ul li:nth-child(odd) {
-  background: ivory;
-}
-.temporal-time-machine-widget .temporal-time-machine-body ul li:hover {
-  background: tomato;
-}
-.temporal-time-machine-widget .temporal-time-machine-body ul li a:hover,
-.temporal-time-machine-widget .temporal-time-machine-body ul li:hover a {
-  color: white;
-}
-.temporal-time-machine-widget .temporal-time-machine-body ul li.temporal-time-machine-last-item a:hover {
-  background: firebrick;
-  color: white;
-}
-.temporal-time-machine-widget .temporal-time-machine ul li a {
-  color: #17607d;
+  font-size: 13px;
+  border: none;
+  padding: 0.5em;
   width: 100%;
-  -webkit-transition: all, 0.3s;
-     -moz-transition: all, 0.3s;
-       -o-transition: all, 0.3s;
-          transition: all, 0.3s;
-
-}
-.temporal-time-machine-widget .temporal-time-machine-body ul li .temporal-time-machine-item {
-  display: inline-block;
-  vertical-align: top;
-  line-height: 1;
-}
-.temporal-time-machine-widget .temporal-time-machine-body ul li .temporal-time-machine-item h3 {
-  display: block;
-  font-weight: normal;
-  margin-bottom: 5px;
-  position: relative;
-  width: 100%;
-}
-.temporal-time-machine-widget .temporal-time-machine-body ul li.temporal-time-machine-active:after {
-  color: limegreen;
-  content: "\25CF";
-  position: absolute;
-  font-size: 200%;
-  line-height: .5em;
-  top: 50%;
-  transform: translateY(-50%);
-  right: 7px;
-}
-.temporal-time-machine-widget .temporal-time-machine-body ul li .temporal-time-machine-last-item:after {
-  color: tomato;
-  content: "\2715";
-  position: absolute;
-  right: 10px;
-}
-.temporal-time-machine-widget .temporal-time-machine-body ul li .temporal-time-machine-last-item h3:hover:after {
-  color: white;
 }
 
 .temporal-time-machine-alignment-left {

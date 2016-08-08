@@ -9,12 +9,19 @@ namespace Temporal
 
         public static string GetCss()
         {
-            var css = GetStuntmanResource("time-machine.css");
+            var css = GetTemporalResource("time-machine.css");
 
             return css;
         }
 
-        private static string GetStuntmanResource(string resourceName)
+        public static string GetJs()
+        {
+            var js = GetTemporalResource("timeMachine.js");
+
+            return js;
+        }
+
+        private static string GetTemporalResource(string resourceName)
         {
             var resource = string.Empty;
 

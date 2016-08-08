@@ -38,7 +38,21 @@ $@"
   <tr><td>DateTime.UtcNow</td><td>{DateTime.UtcNow}</td></tr>
   <tr><td>SystemClock.Now</td><td>{SystemClock.Now}</td></tr>
   <tr><td>SystemClock.UtcNow</td><td>{SystemClock.UtcNow}</td></tr>
+  <tr><td><button id=""get-current-js"">Get current</button></td><td><pre id=""get-current-result-js""></pre></td></tr>
 </table>
+
+<script>
+  var getCurrent = document.getElementById('get-current-js');
+  var currentResult = document.getElementById('get-current-result-js');
+
+  getCurrent.addEventListener('click', function() {{
+    fetch('{Constants.TemporalOptions.DefaultTemporalRootPath + Constants.TemporalOptions.CurrentInfoEndpoint}').then(function(res) {{
+      res.json().then(function(json) {{
+        currentResult.innerText = JSON.stringify(json);
+      }});
+    }});
+  }});
+</script>
 ");
 
                     context.Response.WriteAsync(
