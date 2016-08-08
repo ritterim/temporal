@@ -12,7 +12,7 @@ namespace UsageSample
         public void Configuration(IAppBuilder app)
         {
             TemporalOptions
-                .SetTimeMachineAlignment(TimeMachineAlignment.Right);
+                .SetTimeMachineAlignment(TimeMachineAlignment.Left);
 
             app.UseTemporal(TemporalOptions);
 
