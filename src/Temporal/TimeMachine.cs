@@ -59,6 +59,7 @@ namespace Temporal
     </div>
   </div>
 </div>
+<script src=""https://cdnjs.cloudflare.com/ajax/libs/fetch/1.0.0/fetch.min.js""></script>
 <script>
 {js}
 </script>
