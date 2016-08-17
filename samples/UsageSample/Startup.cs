@@ -36,8 +36,8 @@ $@"
 <table>
   <tr><td>DateTime.Now</td><td>{DateTime.Now}</td></tr>
   <tr><td>DateTime.UtcNow</td><td>{DateTime.UtcNow}</td></tr>
-  <tr><td>SystemClock.Now</td><td>{SystemClock.Now}</td></tr>
-  <tr><td>SystemClock.UtcNow</td><td>{SystemClock.UtcNow}</td></tr>
+  <tr><td>CookieTimeProvider(new CookieService()).Now</td><td>{new CookieTimeProvider(new CookieService()).Now}</td></tr>
+  <tr><td>CookieTimeProvider(new CookieService()).UtcNow</td><td>{new CookieTimeProvider(new CookieService()).UtcNow}</td></tr>
   <tr><td><button id=""get-current-js"">Get current</button></td><td><pre id=""get-current-result-js""></pre></td></tr>
 </table>
 

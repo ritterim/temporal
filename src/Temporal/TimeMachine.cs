@@ -33,8 +33,8 @@ namespace Temporal
     <h2 class=""temporal-time-machine-title"">
       <a href=""#"">
         <img src=""{IconImgSrc}""
-             class=""temporal-time-machine-icon{(SystemClock.IsFrozen ? " temporal-time-machine-icon-disabled" : null)}"" />
-        <strong>Time:</strong> <span id=""temporal-time-machine-header-is-frozen-js"">{(SystemClock.IsFrozen ? "Frozen" : "Live")}</span>
+             class=""temporal-time-machine-icon{(TemporalTime.IsFrozen ? " temporal-time-machine-icon-disabled" : null)}"" />
+        <strong>Time:</strong> <span id=""temporal-time-machine-header-is-frozen-js"">{(TemporalTime.IsFrozen ? "Frozen" : "Live")}</span>
       </a>
     </h2>
   </div>
@@ -54,7 +54,7 @@ namespace Temporal
     </div>
     <div class=""action"">
       <button id=""temporal-time-machine-action-button-js"">
-        {(SystemClock.IsFrozen ? "Go Live" : "Freeze")}
+        {(TemporalTime.IsFrozen ? "Go Live" : "Freeze")}
       </button>
     </div>
   </div>

@@ -9,15 +9,17 @@ namespace Temporal
     {
         public static void UseTemporal(this IAppBuilder app, TemporalOptions options)
         {
+            TemporalTime.AddTimeProvider(new CookieTimeProvider(new CookieService()));
+            TemporalTime.AddTimeProvider(new SystemClockProvider());
+
             app.Map(options.CurrentInfoUri, getDateTime =>
             {
                 getDateTime.Use(async (context, next) =>
                 {
                     var response = new
                     {
-                        Now = SystemClock.Now,
-                        UtcNow = SystemClock.UtcNow,
-                        IsFrozen = SystemClock.IsFrozen
+                        Now = TemporalTime.Now,
+                        UtcNow = TemporalTime.UtcNow
                     };
 
                     var json = JsonConvert.SerializeObject(response);
@@ -36,7 +38,10 @@ namespace Temporal
                     DateTime dateTime;
                     if (DateTime.TryParse(query, out dateTime))
                     {
-                        SystemClock.Freeze(dateTime);
+                        dateTime = dateTime.ToUniversalTime();
+
+                        var cookieTimeProvider = new CookieTimeProvider(new CookieService(() => context));
+                        cookieTimeProvider.SetCookie(dateTime);
 
                         context.Response.StatusCode = 200;
                     }
@@ -53,7 +58,8 @@ namespace Temporal
             {
                 unfreeze.Use(async (context, next) =>
                 {
-                    SystemClock.Unfreeze();
+                    var cookieTimeProvider = new CookieTimeProvider(new CookieService(() => context));
+                    cookieTimeProvider.RemoveCookie();
 
                     context.Response.StatusCode = 200;
 
