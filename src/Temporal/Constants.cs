@@ -4,7 +4,7 @@
     {
         public static class TemporalOptions
         {
-            public const string DefaultTemporalRootPath = "/temporal/";
+            public const string DefaultTemporalRootPath = "/__temporal/";
 
             public const string CurrentInfoEndpoint = "current";
             public const string FreezeEndpoint = "freeze";
