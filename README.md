@@ -18,7 +18,15 @@ PM> Install-Package Temporal
 
 ## Usage
 
-TODO
+Wire up Temporal using `UseTemporal`.
+
+Now, to enable individual time travel replace usages of `DateTime.Now` and `DateTime.UtcNow` with `TemporalClock.Now` and `TemporalClock.UtcNow`, respectively. **Any time freeze requested is scoped to that user only.** When a user freezes time, a session cookie is used to store where that user is in *time*.
+
+## Implementation notes
+
+- `UseTemporal` wires up endpoints for the on-screen *TimeMachine* to use, which enables users to view, freeze at a specific date and time, and unfreeze time.
+- When `UseTemporal` is called, the Temporal endpoints will be available. You may not want this behavior in production.
+- A static class `TemporalTime` is used, rather than an `ITemporalClock` or equivalent interface. This makes it easier to use as necessary wherever you are in code, without having to worry about getting an instance of the `ITemporalClock` implementation from IoC, etc.
 
 ## Contributing
 
