@@ -45,10 +45,12 @@
 
     var url = isFrozen
       ? widget.dataset.temporalTimeMachineUnfreezeEndpoint
-      : widget.dataset.temporalTimeMachineFreezeEndpoint + '?utc=' + utcPicker.value;
+      : widget.dataset.temporalTimeMachineFreezeEndpoint;
 
     fetch(url, {
-      credentials: 'same-origin'
+      credentials: 'same-origin',
+      method: 'POST',
+      body: isFrozen ? null : 'utc=' + utcPicker.value
     }).then(function () {
       isFrozen = !isFrozen;
 

@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Owin;
 using System;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Temporal
@@ -16,6 +17,12 @@ namespace Temporal
             {
                 getDateTime.Use(async (context, next) =>
                 {
+                    if (context.Request.Method != HttpMethod.Get.Method)
+                    {
+                        context.Response.StatusCode = 405;
+                        return;
+                    }
+
                     var response = new
                     {
                         Now = TemporalTime.Now,
@@ -33,10 +40,16 @@ namespace Temporal
             {
                 freeze.Use(async (context, next) =>
                 {
-                    var query = context.Request.Query["utc"];
+                    if (context.Request.Method != HttpMethod.Post.Method)
+                    {
+                        context.Response.StatusCode = 405;
+                        return;
+                    }
+
+                    var form = await context.Request.ReadFormAsync();
 
                     DateTime dateTime;
-                    if (DateTime.TryParse(query, out dateTime))
+                    if (DateTime.TryParse(form.Get("utc"), out dateTime))
                     {
                         dateTime = dateTime.ToUniversalTime();
 
@@ -58,6 +71,12 @@ namespace Temporal
             {
                 unfreeze.Use(async (context, next) =>
                 {
+                    if (context.Request.Method != HttpMethod.Post.Method)
+                    {
+                        context.Response.StatusCode = 405;
+                        return;
+                    }
+
                     var cookieTimeProvider = new CookieTimeProvider(new CookieService(() => context));
                     cookieTimeProvider.RemoveCookie();
 

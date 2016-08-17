@@ -1,8 +1,10 @@
 ﻿using Microsoft.Owin.Testing;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
 using Xunit;
@@ -56,8 +58,11 @@ namespace Temporal.Tests
                 app.UseTemporal(options);
             }))
             {
-                var response = await server.HttpClient.GetAsync(
-                    $"{options.FreezeUri}?utc={freezeDateTime.ToString("o")}");
+                var content = new FormUrlEncodedContent(new Dictionary<string, string>()
+                {
+                    { "utc", freezeDateTime.ToString("o") }
+                });
+                var response = await server.HttpClient.PostAsync(options.FreezeUri, content);
 
                 response.EnsureSuccessStatusCode();
 
@@ -81,9 +86,26 @@ namespace Temporal.Tests
                 app.UseTemporal(options);
             }))
             {
-                var response = await server.HttpClient.GetAsync(options.FreezeUri);
+                var content = new StringContent("");
+                var response = await server.HttpClient.PostAsync(options.FreezeUri, content);
 
                 Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+            }
+        }
+
+        [Fact]
+        public async Task FreezeUri_ShouldReturnMethodNotAllowedForGet()
+        {
+            var options = new TemporalOptions();
+
+            using (var server = TestServer.Create(app =>
+            {
+                app.UseTemporal(options);
+            }))
+            {
+                var response = await server.HttpClient.GetAsync(options.FreezeUri);
+
+                Assert.Equal(HttpStatusCode.MethodNotAllowed, response.StatusCode);
             }
         }
 
@@ -97,7 +119,8 @@ namespace Temporal.Tests
                 app.UseTemporal(options);
             }))
             {
-                var response = await server.HttpClient.GetAsync(options.UnfreezeUri);
+                var content = new StringContent("");
+                var response = await server.HttpClient.PostAsync(options.UnfreezeUri, content);
 
                 response.EnsureSuccessStatusCode();
 
@@ -107,6 +130,22 @@ namespace Temporal.Tests
                 Assert.Equal(
                     $"{CookieTimeProvider.CookieName}=; path=/; expires=Thu, 01-Jan-1970 00:00:00 GMT",
                     setCookieHeaderValue);
+            }
+        }
+
+        [Fact]
+        public async Task UnfreezeUri_ShouldReturnMethodNotAllowedForGet()
+        {
+            var options = new TemporalOptions();
+
+            using (var server = TestServer.Create(app =>
+            {
+                app.UseTemporal(options);
+            }))
+            {
+                var response = await server.HttpClient.GetAsync(options.UnfreezeUri);
+
+                Assert.Equal(HttpStatusCode.MethodNotAllowed, response.StatusCode);
             }
         }
     }
