@@ -44,13 +44,13 @@ namespace Temporal
       Local (UTC Offset: {TimeZoneInfo.Local.GetUtcOffset(DateTime.Now).TotalHours})
       <input id=""temporal-time-machine-local-datetime-js""
              type=""datetime-local""
-             value=""{DateTime.Now.ToString(DateTimeFormat)}"" />
+             value=""{TemporalTime.Now.ToString(DateTimeFormat)}"" />
     </div>
     <div>
       UTC
       <input id=""temporal-time-machine-utc-datetime-js""
              type=""datetime-local""
-             value=""{DateTime.UtcNow.ToString(DateTimeFormat)}"" />
+             value=""{TemporalTime.UtcNow.ToString(DateTimeFormat)}"" />
     </div>
     <div class=""action"">
       <button id=""temporal-time-machine-action-button-js"">
