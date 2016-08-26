@@ -51,8 +51,6 @@ namespace Temporal
                     DateTime dateTime;
                     if (DateTime.TryParse(form.Get("utc"), out dateTime))
                     {
-                        dateTime = dateTime.ToUniversalTime();
-
                         var cookieTimeProvider = new CookieTimeProvider(new CookieService(() => context));
                         cookieTimeProvider.SetCookie(dateTime);
 
