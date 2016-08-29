@@ -40,6 +40,8 @@
   });
 
   actionButton.addEventListener('click', function(evt) {
+    clearInterval(refreshInterval);
+
     evt.target.disabled = true;
     evt.target.innerHTML = 'Waiting ...';
 
