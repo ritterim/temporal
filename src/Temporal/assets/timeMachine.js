@@ -16,13 +16,20 @@
     return date.toISOString().replace(/Z$/, '').replace(/\.\d{3}$/, '');
   };
 
+  var setPickersToCurrent = function() {
+    localPicker.value = getDateTimeLocalFormat(new Date(Date.now() - new Date().getTimezoneOffset() * 60 * 1000));
+    utcPicker.value = getDateTimeLocalFormat(new Date(Date.now()));
+  };
+
+  var syncTimeWithLive = function() {
+    setPickersToCurrent();
+    refreshInterval = setInterval(setPickersToCurrent, 1000);
+  };
+
   var isFrozen = isFrozenHeader.innerText === 'Frozen';
 
   if (!isFrozen) {
-    refreshInterval = setInterval(function() {
-      localPicker.value = getDateTimeLocalFormat(new Date(Date.now() - new Date().getTimezoneOffset() * 60 * 1000));
-      utcPicker.value = getDateTimeLocalFormat(new Date(Date.now()));
-    }, 1000);
+    syncTimeWithLive();
   }
 
   localPicker.addEventListener('change', function(evt) {
@@ -60,6 +67,10 @@
       evt.target.innerHTML = isFrozen ? 'Go Live' : 'Freeze';
 
       isFrozenHeader.innerHTML = isFrozen ? 'Frozen' : 'Live';
+
+      if (!isFrozen) {
+        syncTimeWithLive();
+      }
     });
   });
 
