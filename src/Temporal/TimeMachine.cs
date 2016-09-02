@@ -26,6 +26,7 @@ namespace Temporal
 </style>
 <div id=""temporal-time-machine-widget-js""
      class=""temporal-time-machine-widget temporal-time-machine-alignment-{_options.TimeMachineAlignment.ToString().ToLowerInvariant()}""
+     data-temporal-time-machine-auto-refresh=""{_options.AutoRefresh.ToString().ToLowerInvariant()}""
      data-temporal-time-machine-freeze-endpoint=""{Constants.TemporalOptions.DefaultTemporalRootPath + Constants.TemporalOptions.FreezeEndpoint}""
      data-temporal-time-machine-unfreeze-endpoint=""{Constants.TemporalOptions.DefaultTemporalRootPath + Constants.TemporalOptions.UnfreezeEndpoint}"">
   <div id=""temporal-time-machine-header-js""

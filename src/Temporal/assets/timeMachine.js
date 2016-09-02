@@ -68,7 +68,10 @@
 
       isFrozenHeader.innerHTML = isFrozen ? 'Frozen' : 'Live';
 
-      if (!isFrozen) {
+      if (widget.dataset.temporalTimeMachineAutoRefresh) {
+        window.location.reload(true);
+      }
+      else if (!isFrozen) {
         syncTimeWithLive();
       }
     });
