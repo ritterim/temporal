@@ -79,6 +79,7 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+    <None Include="Temporal.nuspec" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="assets\time-machine.css" />

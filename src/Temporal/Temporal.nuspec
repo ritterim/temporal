@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Temporal</id>
+    <title>Temporal</title>
+    <version>0.0.0</version>
+    <authors>Ritter Insurance Marketing</authors>
+    <licenseUrl>https://raw.githubusercontent.com/ritterim/temporal/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/ritterim/temporal</projectUrl>
+    <description>An ASP.NET library enabling easy time traveling at runtime.</description>
+    <copyright>Copyright 2016 Ritter Insurance Marketing</copyright>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <tags>rimdev temporal time aspnet</tags>
+    <dependencies>
+      <dependency id="Owin" version="1.0" />
+      <dependency id="Microsoft.Owin" version="3.0.1" />
+      <dependency id="Microsoft.Owin.Host.SystemWeb" version="3.0.1" />
+      <dependency id="Newtonsoft.Json" version="9.0.1" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="bin\Release\Temporal.dll" target="lib\net45" />
+  </files>
+</package>
