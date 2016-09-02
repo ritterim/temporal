@@ -7,7 +7,6 @@
 }
 .temporal-time-machine-container img {
   height: 75px;
-  /*max-width: 100%;*/
 }
 .temporal-time-machine-widget {
   position: fixed;
@@ -94,7 +93,6 @@
   position: relative;
 }
 .temporal-time-machine-widget .temporal-time-machine-body div {
-  /*padding: 0.5em;*/
   float: left;
   text-align: center;
   width: 100%;
