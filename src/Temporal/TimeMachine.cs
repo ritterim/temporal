@@ -42,13 +42,17 @@ namespace Temporal
   <div id=""temporal-time-machine-collapse-container-js""
        class=""temporal-time-machine-body"">
     <div>
-      Local (UTC Offset: {TimeZoneInfo.Local.GetUtcOffset(DateTime.Now).TotalHours})
+      <label for=""temporal-time-machine-local-datetime-js"">
+        Local
+      </label>
       <input id=""temporal-time-machine-local-datetime-js""
              type=""datetime-local""
              value=""{TemporalTime.Now.ToString(DateTimeFormat)}"" />
     </div>
     <div>
-      UTC
+      <label for=""temporal-time-machine-utc-datetime-js"">
+        UTC
+      </label>
       <input id=""temporal-time-machine-utc-datetime-js""
              type=""datetime-local""
              value=""{TemporalTime.UtcNow.ToString(DateTimeFormat)}"" />

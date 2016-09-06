@@ -94,8 +94,10 @@
 }
 .temporal-time-machine-widget .temporal-time-machine-body div {
   float: left;
-  text-align: center;
   width: 100%;
+}
+.temporal-time-machine-widget .temporal-time-machine-body div:first-of-type {
+  padding-top: 5px;
 }
 .temporal-time-machine-widget .temporal-time-machine-body button {
   background: whitesmoke;
@@ -104,6 +106,11 @@
   font-size: 1.5em;
   padding: 0.5em 0;
   width: 100%;
+}
+.temporal-time-machine-widget .temporal-time-machine-body label {
+  font-size: 14px;
+  font-weight: bold;
+  padding-left: 5px;
 }
 .temporal-time-machine-widget .temporal-time-machine-body input {
   box-sizing: border-box;
