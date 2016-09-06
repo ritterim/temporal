@@ -25,6 +25,7 @@ namespace Temporal
 
                     var response = new
                     {
+                        TimeProvider = TemporalTime.CurrentTimeProvider.GetType().Name,
                         Now = TemporalTime.Now,
                         UtcNow = TemporalTime.UtcNow
                     };

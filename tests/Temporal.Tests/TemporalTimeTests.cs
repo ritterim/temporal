@@ -48,6 +48,23 @@ namespace Temporal.Tests
         }
 
         [Fact]
+        public void CurrentTimeProvider_ReturnsNullWhenNoTimeProvidersHaveTheTime()
+        {
+            TemporalTime.AddTimeProvider(new NoTimeTestTimeProvider());
+
+            Assert.Null(TemporalTime.CurrentTimeProvider);
+        }
+
+        [Fact]
+        public void CurrentTimeProvider_ReturnsTheTimeFromTheFirstTimeProviderWithTheTime()
+        {
+            TemporalTime.AddTimeProvider(new NoTimeTestTimeProvider());
+            TemporalTime.AddTimeProvider(new TestTimeProvider());
+
+            Assert.IsType<TestTimeProvider>(TemporalTime.CurrentTimeProvider);
+        }
+
+        [Fact]
         public void IsFrozen_ReturnsFalseWhenSystemClockProviderReturnsValue()
         {
             TemporalTime.AddTimeProvider(new SystemClockProvider());

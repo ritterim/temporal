@@ -20,18 +20,24 @@ namespace Temporal
             timeProviders.Clear();
         }
 
+        public static ITimeProvider CurrentTimeProvider
+        {
+            get
+            {
+                return TimeProviders.FirstOrDefault(x => x.Now.HasValue);
+            }
+        }
+
         public static bool IsFrozen
         {
             get
             {
-                var firstTimeProviderWithValue = TimeProviders.FirstOrDefault(x => x.Now.HasValue);
-
-                if (firstTimeProviderWithValue == default(ITimeProvider))
+                if (CurrentTimeProvider == default(ITimeProvider))
                 {
                     return false;
                 }
 
-                return firstTimeProviderWithValue.GetType().Name != nameof(SystemClockProvider);
+                return CurrentTimeProvider.GetType().Name != nameof(SystemClockProvider);
             }
         }
 
@@ -39,14 +45,12 @@ namespace Temporal
         {
             get
             {
-                var timeProvider = TimeProviders.FirstOrDefault(x => x.Now.HasValue);
-
-                if (timeProvider == null)
+                if (CurrentTimeProvider == null)
                 {
                     throw new ApplicationException("No time provider is ready to return the time.");
                 }
 
-                return timeProvider.Now.Value;
+                return CurrentTimeProvider.Now.Value;
             }
         }
 
@@ -54,14 +58,12 @@ namespace Temporal
         {
             get
             {
-                var timeProvider = TimeProviders.FirstOrDefault(x => x.UtcNow.HasValue);
-
-                if (timeProvider == null)
+                if (CurrentTimeProvider == null)
                 {
                     throw new ApplicationException("No time provider is ready to return the time.");
                 }
 
-                return timeProvider.UtcNow.Value;
+                return CurrentTimeProvider.UtcNow.Value;
             }
         }
     }
