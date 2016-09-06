@@ -48,11 +48,13 @@ $@"
   var currentResult = document.getElementById('get-current-result-js');
 
   getCurrent.addEventListener('click', function() {{
-    fetch('{Constants.TemporalOptions.DefaultTemporalRootPath + Constants.TemporalOptions.CurrentInfoEndpoint}').then(function(res) {{
-      res.json().then(function(json) {{
-        currentResult.innerText = JSON.stringify(json);
+    fetch('{Constants.TemporalOptions.DefaultTemporalRootPath + Constants.TemporalOptions.CurrentInfoEndpoint}',
+        {{ credentials: 'same-origin' }})
+      .then(function(res) {{
+        res.json().then(function(json) {{
+          currentResult.innerText = JSON.stringify(json);
+        }});
       }});
-    }});
   }});
 </script>
 ");
