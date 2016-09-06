@@ -78,9 +78,11 @@
   display: block;
   font-weight: bold;
   text-decoration: none;
-  margin-left: 35px;
+  /*margin-left: 35px;*/
 }
 .temporal-time-machine-widget .temporal-time-machine-header .temporal-time-machine-icon {
+  display: none;
+
   padding-right: 10px;
   vertical-align: middle;
 }
