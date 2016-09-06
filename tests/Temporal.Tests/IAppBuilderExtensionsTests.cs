@@ -49,7 +49,7 @@ namespace Temporal.Tests
         [Fact]
         public async Task FreezeUri_ShouldSetCookie()
         {
-            var freezeDateTime = new DateTime(2000, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            var freezeUtc = "2000-01-01T00:00:00";
 
             var options = new TemporalOptions();
 
@@ -60,7 +60,7 @@ namespace Temporal.Tests
             {
                 var content = new FormUrlEncodedContent(new Dictionary<string, string>()
                 {
-                    { "utc", freezeDateTime.ToString("o") }
+                    { "utc", freezeUtc }
                 });
                 var response = await server.HttpClient.PostAsync(options.FreezeUri, content);
 
@@ -69,7 +69,7 @@ namespace Temporal.Tests
                 var setCookieHeaderValue = response.Headers
                     .Single(x => x.Key == "Set-Cookie").Value.Single();
                 var expectedStartsWith = CookieTimeProvider.CookieName +
-                    $"={HttpUtility.UrlEncode(freezeDateTime.ToString("o")).ToUpper()}";
+                    $"={HttpUtility.UrlEncode(freezeUtc + ".0000000").ToUpper()}";
 
                 Assert.True(setCookieHeaderValue.StartsWith(expectedStartsWith),
                     $"Expected\n{setCookieHeaderValue}\nto start with\n{expectedStartsWith}");
