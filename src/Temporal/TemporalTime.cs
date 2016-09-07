@@ -24,7 +24,9 @@ namespace Temporal
         {
             get
             {
-                return TimeProviders.FirstOrDefault(x => x.Now.HasValue);
+                var timeProvider = TimeProviders.FirstOrDefault(x => x.Now.HasValue);
+
+                return timeProvider ?? new SystemClockProvider();
             }
         }
 
@@ -43,28 +45,12 @@ namespace Temporal
 
         public static DateTime Now
         {
-            get
-            {
-                if (CurrentTimeProvider == null)
-                {
-                    throw new ApplicationException("No time provider is ready to return the time.");
-                }
-
-                return CurrentTimeProvider.Now.Value;
-            }
+            get { return CurrentTimeProvider.Now.Value; }
         }
 
         public static DateTime UtcNow
         {
-            get
-            {
-                if (CurrentTimeProvider == null)
-                {
-                    throw new ApplicationException("No time provider is ready to return the time.");
-                }
-
-                return CurrentTimeProvider.UtcNow.Value;
-            }
+            get { return CurrentTimeProvider.UtcNow.Value; }
         }
     }
 }
