@@ -1,6 +1,6 @@
 ﻿namespace Temporal
 {
-    public static class Constants
+    public static class TemporalConstants
     {
         public static class TemporalOptions
         {

@@ -62,7 +62,7 @@
     <Compile Include="..\..\common\SolutionInfo.cs">
       <Link>Properties\SolutionInfo.cs</Link>
     </Compile>
-    <Compile Include="Constants.cs" />
+    <Compile Include="TemporalConstants.cs" />
     <Compile Include="CookieService.cs" />
     <Compile Include="CookieTimeProvider.cs" />
     <Compile Include="ITimeProvider.cs" />

@@ -6,7 +6,7 @@ namespace Temporal
     {
         private readonly string _temporalRootPath;
 
-        public TemporalOptions(string temporalRootPath = Constants.TemporalOptions.DefaultTemporalRootPath)
+        public TemporalOptions(string temporalRootPath = TemporalConstants.TemporalOptions.DefaultTemporalRootPath)
         {
             _temporalRootPath = temporalRootPath;
 
@@ -14,9 +14,9 @@ namespace Temporal
                 _temporalRootPath += "/";
         }
 
-        public string CurrentInfoUri => _temporalRootPath + Constants.TemporalOptions.CurrentInfoEndpoint;
-        public string FreezeUri => _temporalRootPath + Constants.TemporalOptions.FreezeEndpoint;
-        public string UnfreezeUri => _temporalRootPath + Constants.TemporalOptions.UnfreezeEndpoint;
+        public string CurrentInfoUri => _temporalRootPath + TemporalConstants.TemporalOptions.CurrentInfoEndpoint;
+        public string FreezeUri => _temporalRootPath + TemporalConstants.TemporalOptions.FreezeEndpoint;
+        public string UnfreezeUri => _temporalRootPath + TemporalConstants.TemporalOptions.UnfreezeEndpoint;
 
         /// <summary>
         /// The current alignment of the on-screen time machine.
