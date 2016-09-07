@@ -14,6 +14,7 @@ var configuration = Argument("configuration", "Release");
 // Define directories.
 var srcBuildDir = Directory("./src/Temporal/bin") + Directory(configuration);
 var testsBuildDir = Directory("./tests/Temporal.Tests/bin") + Directory(configuration);
+var artifactsDir = Directory("./artifacts");
 
 //////////////////////////////////////////////////////////////////////
 // TASKS
@@ -24,6 +25,7 @@ Task("Clean")
 {
     CleanDirectory(srcBuildDir);
     CleanDirectory(testsBuildDir);
+    CleanDirectory(artifactsDir);
 });
 
 Task("Restore-NuGet-Packages")
@@ -63,12 +65,21 @@ Task("Run-Tests")
     });
 });
 
+Task("Package")
+    .IsDependentOn("Run-Tests")
+    .Does(() =>
+{
+    NuGetPack("./src/Temporal/Temporal.nuspec", new NuGetPackSettings {
+        OutputDirectory = artifactsDir
+    });
+});
+
 //////////////////////////////////////////////////////////////////////
 // TASK TARGETS
 //////////////////////////////////////////////////////////////////////
 
 Task("Default")
-    .IsDependentOn("Run-Tests");
+    .IsDependentOn("Package");
 
 //////////////////////////////////////////////////////////////////////
 // EXECUTION
