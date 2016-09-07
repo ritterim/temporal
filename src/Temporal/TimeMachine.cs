@@ -27,8 +27,8 @@ namespace Temporal
 <div id=""temporal-time-machine-widget-js""
      class=""temporal-time-machine-widget temporal-time-machine-alignment-{_options.TimeMachineAlignment.ToString().ToLowerInvariant()}""
      data-temporal-time-machine-auto-refresh=""{_options.AutoRefresh.ToString().ToLowerInvariant()}""
-     data-temporal-time-machine-freeze-endpoint=""{Constants.TemporalOptions.DefaultTemporalRootPath + Constants.TemporalOptions.FreezeEndpoint}""
-     data-temporal-time-machine-unfreeze-endpoint=""{Constants.TemporalOptions.DefaultTemporalRootPath + Constants.TemporalOptions.UnfreezeEndpoint}"">
+     data-temporal-time-machine-freeze-endpoint=""{TemporalConstants.TemporalOptions.DefaultTemporalRootPath + TemporalConstants.TemporalOptions.FreezeEndpoint}""
+     data-temporal-time-machine-unfreeze-endpoint=""{TemporalConstants.TemporalOptions.DefaultTemporalRootPath + TemporalConstants.TemporalOptions.UnfreezeEndpoint}"">
   <div id=""temporal-time-machine-header-js""
        class=""temporal-time-machine-header"">
     <h2 class=""temporal-time-machine-title"">
