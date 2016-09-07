@@ -1,3 +1,3 @@
 @echo off
 
-powershell -File build.ps1
+powershell -ExecutionPolicy Unrestricted -File build.ps1
