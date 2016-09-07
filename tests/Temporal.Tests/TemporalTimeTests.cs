@@ -48,11 +48,11 @@ namespace Temporal.Tests
         }
 
         [Fact]
-        public void CurrentTimeProvider_ReturnsNullWhenNoTimeProvidersHaveTheTime()
+        public void CurrentTimeProvider_UsesSystemClockProviderWhenNoTimeProvidersHaveTheTime()
         {
             TemporalTime.AddTimeProvider(new NoTimeTestTimeProvider());
 
-            Assert.Null(TemporalTime.CurrentTimeProvider);
+            Assert.IsType<SystemClockProvider>(TemporalTime.CurrentTimeProvider);
         }
 
         [Fact]
@@ -91,51 +91,11 @@ namespace Temporal.Tests
         }
 
         [Fact]
-        public void Now_ThrowsWhenNoTimeProvidersAreConfigured()
-        {
-            Assert.Throws<ApplicationException>(() =>
-            {
-                var now = TemporalTime.Now;
-            });
-        }
-
-        [Fact]
-        public void Now_ThrowsWhenNoTimeProvidersHaveTheTime()
-        {
-            TemporalTime.AddTimeProvider(new NoTimeTestTimeProvider());
-
-            Assert.Throws<ApplicationException>(() =>
-            {
-                var now = TemporalTime.Now;
-            });
-        }
-
-        [Fact]
         public void Now_ReturnsTheTimeFromTheFirstTimeProviderWithTheTime()
         {
             TemporalTime.AddTimeProvider(new TestTimeProvider());
 
             Assert.Equal(TestTimeProvider.DefaultNow, TemporalTime.Now);
-        }
-
-        [Fact]
-        public void UtcNow_ThrowsWhenNoTimeProvidersAreConfigured()
-        {
-            Assert.Throws<ApplicationException>(() =>
-            {
-                var now = TemporalTime.UtcNow;
-            });
-        }
-
-        [Fact]
-        public void UtcNow_ThrowsWhenNoTimeProvidersHaveTheTime()
-        {
-            TemporalTime.AddTimeProvider(new NoTimeTestTimeProvider());
-
-            Assert.Throws<ApplicationException>(() =>
-            {
-                var now = TemporalTime.UtcNow;
-            });
         }
 
         [Fact]
