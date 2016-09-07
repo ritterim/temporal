@@ -2,6 +2,8 @@
 
 An ASP.NET library enabling easy time traveling at runtime.
 
+![Time machine widget](screenshot.png)
+
 ## Installation
 
 TODO
@@ -16,18 +18,44 @@ PM> Install-Package Temporal
 ```
 -->
 
-## Usage
+## Quickstart
 
-Wire up Temporal using `UseTemporal`.
+In **Startup.cs**:
 
-Now, to enable individual time travel replace usages of `DateTime.Now` and `DateTime.UtcNow` with `TemporalClock.Now` and `TemporalClock.UtcNow`, respectively. **Any time freeze requested is scoped to that user only.** When a user freezes time, a session cookie is used to store where that user is in *time*.
+```csharp
+public class Startup
+{
+    public static readonly TemporalOptions TemporalOptions = new TemporalOptions();
 
-**Note:** Requests, including client-side requests, should include the `CookieTimeProvider` cookie (`__TemporalTime`) to take advantage of time freezing. Otherwise, the current time may be used expectedly.
+    public void Configuration(IAppBuilder app)
+    {
+        if (ShouldUseTemporal) // TODO: Implement ShouldUseTemporal or remove this.
+        {
+            app.UseTemporal(TemporalOptions);
+        }
+    }
+}
+```
 
-## Implementation notes
+In **_Layout.cshtml** *(or, any view you want to display the on-screen time machine)*:
 
-- `UseTemporal` wires up endpoints for the on-screen *TimeMachine* to use, which enables users to view, freeze at a specific date and time, and unfreeze time.
+```razor
+if (ShouldUseTemporal) // TODO: Implement ShouldUseTemporal or remove this.
+{
+    @Html.Raw(new Temporal.TimeMachine(Startup.TemporalOptions).GetHtml())
+}
+```
+
+**In code**, use these as necessary:
+
+- `TemporalTime.Now` -- Equivalent to `DateTime.Now` with user time freezing capability.
+- `TemporalTime.UtcNow` -- Equivalent to `DateTime.UtcNow` with user time freezing capability.
+
+## Notes
+
+- `UseTemporal` wires up endpoints for the on-screen time machine to use, which enables users to view the current state, freeze time at a specific date and time, and unfreeze time. **Any time freeze requested is scoped to that browser session only.**
 - When `UseTemporal` is called, the Temporal endpoints will be available. You may not want this behavior in production.
+- Requests, including client-side requests, should include the `CookieTimeProvider` cookie (`__TemporalTime`) to take advantage of time freezing. Otherwise, the current time may be used unexpectedly.
 - A static class `TemporalTime` is used, rather than an `ITemporalClock` or equivalent interface. This makes it easier to use as necessary wherever you are in code, without having to worry about getting an instance of the `ITemporalClock` implementation from IoC, etc.
 
 ## Contributing
