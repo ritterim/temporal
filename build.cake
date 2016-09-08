@@ -1,4 +1,5 @@
 #tool "nuget:?package=xunit.runner.console&version=2.1.0"
+#tool "nuget:?package=OpenCover"
 
 //////////////////////////////////////////////////////////////////////
 // ARGUMENTS
@@ -61,8 +62,24 @@ Task("Run-Tests")
     .IsDependentOn("Build")
     .Does(() =>
 {
-    XUnit2("./tests/**/bin/" + configuration + "/*.Tests.dll", new XUnit2Settings {
-    });
+    var pattern = "./tests/**/bin/" + configuration + "/*.Tests.dll";
+
+    if (IsRunningOnWindows())
+    {
+        OpenCover(tool => {
+            tool.XUnit2(pattern, new XUnit2Settings {
+                ShadowCopy = false
+            });
+        },
+        new FilePath(artifactsDir + Directory("./opencover-result.xml")),
+        new OpenCoverSettings()
+            .WithFilter("+[*]* -[xunit.*]* -[*.Tests]*"));
+    }
+    else
+    {
+        XUnit2(pattern, new XUnit2Settings {
+        });
+    }
 });
 
 Task("Package")
