@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Temporal
 {
@@ -24,10 +25,25 @@ namespace Temporal
         public TimeMachineAlignment TimeMachineAlignment { get; private set; }
 
         /// <summary>
+        /// The time providers to be added when initialized.
+        /// </summary>
+        public ICollection<ITimeProvider> TimeProviders { get; private set; } = new List<ITimeProvider>();
+
+        /// <summary>
         /// The current setting if the application should reload the page
         /// when toggling between frozen and live time.
         /// </summary>
         public bool AutoRefresh { get; private set; } = true;
+
+        /// <summary>
+        /// Add an ITimeProvider instance to this TemporalOptions instance.
+        /// </summary>
+        public TemporalOptions AddTimeProvider(ITimeProvider timeProvider)
+        {
+            TimeProviders.Add(timeProvider);
+
+            return this;
+        }
 
         /// <summary>
         /// Set the alignment of the on-screen time machine.
