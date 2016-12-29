@@ -18,10 +18,12 @@ namespace Temporal
 
         public virtual void Append(string cookieName, string value)
         {
-            getContext().Response.Cookies.Append(cookieName, value, new CookieOptions
+            var context = getContext();
+
+            context.Response.Cookies.Append(cookieName, value, new CookieOptions
             {
                 HttpOnly = true,
-                // TODO: Set secure cookie if operating in a secure environment.
+                Secure = context.Request.IsSecure
             });
         }
 
