@@ -12,6 +12,8 @@ namespace UsageSample
         public void Configuration(IAppBuilder app)
         {
             TemporalOptions
+                .AddTimeProvider(new CookieTimeProvider(new CookieService()))
+                .AddTimeProvider(new SystemClockProvider())
                 .SetTimeMachineAlignment(TimeMachineAlignment.Left);
 
             app.UseTemporal(TemporalOptions);

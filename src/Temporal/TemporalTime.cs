@@ -39,7 +39,7 @@ namespace Temporal
                     return false;
                 }
 
-                return CurrentTimeProvider.GetType().Name != nameof(SystemClockProvider);
+                return CurrentTimeProvider.IsFrozen;
             }
         }
 

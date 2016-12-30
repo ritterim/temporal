@@ -10,6 +10,8 @@ namespace Temporal
 
         public CookieTimeProvider(CookieService cookieService)
         {
+            if (cookieService == null) throw new ArgumentNullException(nameof(cookieService));
+
             this.cookieService = cookieService;
         }
 
@@ -43,7 +45,21 @@ namespace Temporal
             }
         }
 
-        public DateTime? ReadCookie()
+        public bool SupportsFreeze => true;
+
+        public bool IsFrozen => cookieService.GetValue(CookieName) != null;
+
+        public void Freeze(DateTime freezeDateTime)
+        {
+            cookieService.Append(CookieName, freezeDateTime.ToString("o"));
+        }
+
+        public void Unfreeze()
+        {
+            cookieService.Delete(CookieName);
+        }
+
+        private DateTime? ReadCookie()
         {
             var cookie = cookieService.GetValue(CookieName);
 
@@ -59,16 +75,6 @@ namespace Temporal
             }
 
             return null;
-        }
-
-        public void RemoveCookie()
-        {
-            cookieService.Delete(CookieName);
-        }
-
-        public void SetCookie(DateTime freezeDateTime)
-        {
-            cookieService.Append(CookieName, freezeDateTime.ToString("o"));
         }
     }
 }

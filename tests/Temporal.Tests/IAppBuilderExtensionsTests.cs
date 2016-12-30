@@ -2,37 +2,38 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using System.Web;
 using Xunit;
 
 namespace Temporal.Tests
 {
     public class IAppBuilderExtensionsTests
     {
-        [Fact(Skip = "An issue with context being unavailable in CookieService GetValue is making this test difficult.")]
+        [Fact]
         public async Task CurrentInfoUri_ShouldReturnExpectedResponse()
         {
             var freezeDateTime = new DateTime(2000, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
-            var options = new TemporalOptions();
+            var timeProvider = new TestFreezeableTimeProvider();
+            timeProvider.Freeze(freezeDateTime);
+
+            var options = new TemporalOptions()
+                .AddTimeProvider(timeProvider);
 
             using (var server = TestServer.Create(app =>
             {
                 app.UseTemporal(options);
             }))
             {
-                var response = await server.CreateRequest(options.CurrentInfoUri)
-                    .AddHeader("cookie", freezeDateTime.ToString("o"))
-                    .GetAsync();
+                var response = await server.HttpClient.GetAsync(options.CurrentInfoUri);
 
                 response.EnsureSuccessStatusCode();
 
                 var responseType = new
                 {
+                    TimeProvider = "",
                     Now = new DateTime(),
                     UtcNow = new DateTime()
                 };
@@ -41,17 +42,19 @@ namespace Temporal.Tests
                     await response.Content.ReadAsStringAsync(),
                     responseType);
 
+                Assert.Equal("TestFreezeableTimeProvider", responseObj.TimeProvider);
                 Assert.Equal(freezeDateTime, responseObj.UtcNow);
                 Assert.Equal(freezeDateTime.ToLocalTime(), responseObj.Now);
             }
         }
 
         [Fact]
-        public async Task FreezeUri_ShouldSetCookie()
+        public async Task FreezeUri_ShouldFreeze()
         {
             var freezeUtc = "2000-01-01T00:00:00";
 
-            var options = new TemporalOptions();
+            var options = new TemporalOptions()
+                .AddTimeProvider(new TestFreezeableTimeProvider());
 
             using (var server = TestServer.Create(app =>
             {
@@ -65,21 +68,14 @@ namespace Temporal.Tests
                 var response = await server.HttpClient.PostAsync(options.FreezeUri, content);
 
                 response.EnsureSuccessStatusCode();
-
-                var setCookieHeaderValue = response.Headers
-                    .Single(x => x.Key == "Set-Cookie").Value.Single();
-                var expectedStartsWith = CookieTimeProvider.CookieName +
-                    $"={HttpUtility.UrlEncode(freezeUtc + ".0000000").ToUpper()}";
-
-                Assert.True(setCookieHeaderValue.StartsWith(expectedStartsWith),
-                    $"Expected\n{setCookieHeaderValue}\nto start with\n{expectedStartsWith}");
             }
         }
 
         [Fact]
         public async Task FreezeUri_ShouldReturnBadRequestWhenMissingQueryStringParameter()
         {
-            var options = new TemporalOptions();
+            var options = new TemporalOptions()
+                .AddTimeProvider(new SystemClockProvider());
 
             using (var server = TestServer.Create(app =>
             {
@@ -96,7 +92,8 @@ namespace Temporal.Tests
         [Fact]
         public async Task FreezeUri_ShouldReturnMethodNotAllowedForGet()
         {
-            var options = new TemporalOptions();
+            var options = new TemporalOptions()
+                .AddTimeProvider(new SystemClockProvider());
 
             using (var server = TestServer.Create(app =>
             {
@@ -110,9 +107,13 @@ namespace Temporal.Tests
         }
 
         [Fact]
-        public async Task UnfreezeUri_ShouldRemoveCookie()
+        public async Task UnfreezeUri_ShouldUnfreezeIfFrozen()
         {
-            var options = new TemporalOptions();
+            var timeProvider = new TestFreezeableTimeProvider();
+            timeProvider.Freeze(DateTime.UtcNow);
+
+            var options = new TemporalOptions()
+                .AddTimeProvider(timeProvider);
 
             using (var server = TestServer.Create(app =>
             {
@@ -124,19 +125,16 @@ namespace Temporal.Tests
 
                 response.EnsureSuccessStatusCode();
 
-                var setCookieHeaderValue = response.Headers
-                    .Single(x => x.Key == "Set-Cookie").Value.Single();
-
-                Assert.Equal(
-                    $"{CookieTimeProvider.CookieName}=; path=/; expires=Thu, 01-Jan-1970 00:00:00 GMT",
-                    setCookieHeaderValue);
+                Assert.Null(timeProvider.Now);
+                Assert.Null(timeProvider.UtcNow);
             }
         }
 
         [Fact]
         public async Task UnfreezeUri_ShouldReturnMethodNotAllowedForGet()
         {
-            var options = new TemporalOptions();
+            var options = new TemporalOptions()
+                .AddTimeProvider(new SystemClockProvider());
 
             using (var server = TestServer.Create(app =>
             {

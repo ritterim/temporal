@@ -122,12 +122,52 @@ namespace Temporal.Tests
             public DateTime? Now { get; set; }
 
             public DateTime? UtcNow { get; set; }
+
+            public bool SupportsFreeze
+            {
+                get { throw new NotImplementedException(); }
+            }
+
+            public bool IsFrozen
+            {
+                get { throw new NotImplementedException(); }
+            }
+
+            public void Freeze(DateTime dateTime)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void Unfreeze()
+            {
+                throw new NotImplementedException();
+            }
         }
 
         private class NoTimeTestTimeProvider : ITimeProvider
         {
             public DateTime? Now => null;
             public DateTime? UtcNow => null;
+
+            public bool SupportsFreeze
+            {
+                get { throw new NotImplementedException(); }
+            }
+
+            public bool IsFrozen
+            {
+                get { throw new NotImplementedException(); }
+            }
+
+            public void Freeze(DateTime dateTime)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void Unfreeze()
+            {
+                throw new NotImplementedException();
+            }
         }
     }
 }

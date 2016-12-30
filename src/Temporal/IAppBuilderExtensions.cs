@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Owin;
 using System;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -10,8 +11,18 @@ namespace Temporal
     {
         public static void UseTemporal(this IAppBuilder app, TemporalOptions options)
         {
-            TemporalTime.AddTimeProvider(new CookieTimeProvider(new CookieService()));
-            TemporalTime.AddTimeProvider(new SystemClockProvider());
+            if (!options.TimeProviders.Any())
+            {
+                throw new ArgumentException(
+                    $"{nameof(options.TimeProviders)} must contain at least 1 time provider.");
+            }
+
+            TemporalTime.ClearTimeProviders();
+
+            foreach (var timeProvider in options.TimeProviders)
+            {
+                TemporalTime.AddTimeProvider(timeProvider);
+            }
 
             app.Map(options.CurrentInfoUri, getDateTime =>
             {
@@ -52,8 +63,17 @@ namespace Temporal
                     DateTime dateTime;
                     if (DateTime.TryParse(form.Get("utc"), out dateTime))
                     {
-                        var cookieTimeProvider = new CookieTimeProvider(new CookieService(() => context));
-                        cookieTimeProvider.SetCookie(dateTime);
+                        var firstFreezableTimeProvider = TemporalTime.TimeProviders.FirstOrDefault(x => x.SupportsFreeze);
+
+                        if (firstFreezableTimeProvider == null)
+                        {
+                            context.Response.StatusCode = 400;
+                            await context.Response.WriteAsync(
+                                $"No configured time providers support freeze.");
+                            return;
+                        }
+
+                        firstFreezableTimeProvider.Freeze(dateTime);
 
                         context.Response.StatusCode = 200;
                     }
@@ -76,8 +96,25 @@ namespace Temporal
                         return;
                     }
 
-                    var cookieTimeProvider = new CookieTimeProvider(new CookieService(() => context));
-                    cookieTimeProvider.RemoveCookie();
+                    var currentTimeProvider = TemporalTime.CurrentTimeProvider;
+
+                    if (currentTimeProvider == null)
+                    {
+                        context.Response.StatusCode = 200;
+                        await context.Response.WriteAsync(
+                            "TemporalTime.CurrentTimeProvider is not currently frozen.");
+                        return;
+                    }
+
+                    if (!currentTimeProvider.SupportsFreeze)
+                    {
+                        context.Response.StatusCode = 400;
+                        await context.Response.WriteAsync(
+                            $"Current time provider: {currentTimeProvider.GetType().Name} does not support unfreeze.");
+                        return;
+                    }
+
+                    currentTimeProvider.Unfreeze();
 
                     context.Response.StatusCode = 200;
 
